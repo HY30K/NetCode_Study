@@ -1,2 +1,2 @@
-# NetCode_Study
+# Netcode_Study
 2024 Unity Netcode Study Project
