@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - projectile
   - 
   - 
   - 
@@ -38,6 +38,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1194702971
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Terrain
+    uniqueID: 3108149705
+    locked: 0
+  - name: Coin
+    uniqueID: 1039222423
+    locked: 0
+  - name: PlayerLayer
+    uniqueID: 836230579
+    locked: 0
+  - name: UI
+    uniqueID: 268163233
     locked: 0

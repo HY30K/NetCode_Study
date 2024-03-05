@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Button text="Host" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HostBtn" style="width: 200px; height: 100px; align-self: flex-end; font-size: 20px; margin-top: 10px; margin-right: 10px;" />
+    <ui:Button text="Client" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClientBtn" style="width: 200px; height: 100px; align-self: flex-end; font-size: 20px; margin-top: 10px; margin-right: 10px;" />
+</ui:UXML>
