@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ProjectileLauncher : NetworkBehaviour
 {
@@ -15,6 +16,8 @@ public class ProjectileLauncher : NetworkBehaviour
     [SerializeField] private float _projectileSpeed;
 
     [SerializeField] private float _fireCooltime;
+
+    public UnityEvent OnFire;
 
     private bool _shouldFire;
     private float _prevFireTime;
@@ -55,6 +58,7 @@ public class ProjectileLauncher : NetworkBehaviour
         projectileInstance.transform.up = dir; //이렇게도 회전이 된다.
         Physics2D.IgnoreCollision(_playerCollider, projectileInstance.GetComponent<Collider2D>());
 
+        OnFire?.Invoke();
         if (projectileInstance.TryGetComponent<Rigidbody2D>(out Rigidbody2D rigidbody))
         {
             rigidbody.velocity = rigidbody.transform.up * _projectileSpeed;
@@ -66,19 +70,23 @@ public class ProjectileLauncher : NetworkBehaviour
     private void PrimaryFireServerRpc(Vector3 spawnPos, Vector3 dir)
     {
         GameObject projectileInstance = Instantiate(_serverProjectilePrefab, spawnPos, Quaternion.identity);
-
         projectileInstance.transform.up = dir;
-
         Physics2D.IgnoreCollision(_playerCollider, projectileInstance.GetComponent<Collider2D>());
+
+        //서버에만 이걸 넣는다. 
+        if (projectileInstance.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact damage))
+        {
+            damage.SetOwner(OwnerClientId); //소유주 설정
+        }
 
         if (projectileInstance.TryGetComponent<Rigidbody2D>(out Rigidbody2D rigidbody))
         {
             rigidbody.velocity = rigidbody.transform.up * _projectileSpeed;
         }
-
         //클라이언트 RPC콜로 날리니까 이 NetworkBehaviour를 찾아서 거기서 매서드를 실행한다.
         SpawnDummyProjectileClientRpc(spawnPos, dir);
     }
+
 
     [ClientRpc]
     private void SpawnDummyProjectileClientRpc(Vector3 spawnPos, Vector3 dir)

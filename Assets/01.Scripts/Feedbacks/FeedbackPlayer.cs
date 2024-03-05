@@ -1,18 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FeedbackPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private List<Feedback> _feedbackToPlay = null;
+
+    private void Awake()
     {
-        
+        _feedbackToPlay = new List<Feedback>();
+        GetComponents<Feedback>(_feedbackToPlay);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayFeedback()
     {
-        
+        FinishFeedback();
+        foreach (Feedback f in _feedbackToPlay)
+        {
+            f.CreateFeedback();
+        }
+    }
+
+    public void FinishFeedback()
+    {
+        foreach (Feedback f in _feedbackToPlay)
+        {
+            f.CompletePrevFeedback();
+        }
     }
 }
