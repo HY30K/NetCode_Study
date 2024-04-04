@@ -17,6 +17,6 @@ public class JoinCodeConnectUI : MonoBehaviour
     private async void HandleJoinBtnClick()
     {
         string joinCde = _joinCodeText.text;
-        await ClientSingletone.Instance.GameManager.StartClientWithJoinCode(joinCde);
+        await ClientSingleton.Instance.GameManager.StartClientWithJoinCode(joinCde);
     }
 }

@@ -8,15 +8,25 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Text;
+using Unity.Services.Authentication;
 
-public class ClientGameManager
+public class ClientGameManager : IDisposable
 {
+    private const string MenuScenename = "Menu";
     private JoinAllocation _allocation;
+
+    private NetworkClient _networkClient;
+
+    private string _playerName;
+    public string PlayerName => _playerName;
 
     public async Task<bool> InitAsync()
     {
         //플레이어 인증 부분 들어갈 예정.
         await UnityServices.InitializeAsync();
+
+        _networkClient = new NetworkClient(NetworkManager.Singleton);
 
         AuthState authState = await UGSAuthWrapper.DoAuth();
 
@@ -43,6 +53,19 @@ public class ClientGameManager
             transport.SetRelayServerData(relayServerData);
 
             NetworkManager.Singleton.StartClient();
+
+            UserData userData = new UserData()
+            {
+                username = _playerName,
+                userAuthId = AuthenticationService.Instance.PlayerId
+            };
+
+            string json = JsonUtility.ToJson(userData);
+            byte[] payload = Encoding.UTF8.GetBytes(json);
+
+            NetworkManager.Singleton.NetworkConfig.ConnectionData = payload;
+
+            NetworkManager.Singleton.StartClient();
         }
         catch (Exception e)
         {
@@ -50,5 +73,20 @@ public class ClientGameManager
             return;
         }
 
+    }
+
+    public void SetPlayerName(string playerName)
+    {
+        _playerName = playerName;
+    }
+
+    public void Dispose()
+    {
+        _networkClient?.Dispose();
+    }
+
+    public void Disconnect()
+    {
+        _networkClient.Disconnect();
     }
 }

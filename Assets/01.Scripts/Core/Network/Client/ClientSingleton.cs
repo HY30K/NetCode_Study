@@ -2,18 +2,18 @@ using System.Threading.Tasks;
 using TMPro.EditorUtilities;
 using UnityEngine;
 
-public class ClientSingletone : MonoBehaviour
+public class ClientSingleton : MonoBehaviour
 {
-    private static ClientSingletone instance;
+    private static ClientSingleton instance;
 
     public ClientGameManager GameManager { get; set; }
-    public static ClientSingletone Instance
+    public static ClientSingleton Instance
     {
         get
         {
             if (instance != null) return instance;
 
-            instance = FindObjectOfType<ClientSingletone>();
+            instance = FindObjectOfType<ClientSingleton>();
 
             if (instance == null)
             {
@@ -24,6 +24,7 @@ public class ClientSingletone : MonoBehaviour
             return instance;
         }
     }
+
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -34,5 +35,10 @@ public class ClientSingletone : MonoBehaviour
         GameManager = new ClientGameManager();
 
         return await GameManager.InitAsync();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager?.Dispose();
     }
 }

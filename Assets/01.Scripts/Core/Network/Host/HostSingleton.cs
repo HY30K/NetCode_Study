@@ -2,18 +2,18 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class HostSingletone : MonoBehaviour
+public class HostSingleton : MonoBehaviour
 {
-    private static HostSingletone instance;
+    private static HostSingleton instance;
 
     public HostGameManager GameManager { get; private set; }
-    public static HostSingletone Instance
+    public static HostSingleton Instance
     {
         get
         {
             if (instance != null) return instance;
 
-            instance = FindObjectOfType<HostSingletone>();
+            instance = FindObjectOfType<HostSingleton>();
 
             if (instance == null)
             {
@@ -33,5 +33,10 @@ public class HostSingletone : MonoBehaviour
     public void CreateHost()
     {
         GameManager = new HostGameManager();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager?.Dispose();
     }
 }
