@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -27,9 +24,18 @@ public class ApplicationController : MonoBehaviour
             hostSingletone.CreateHost();
 
             ClientSingletone clientSingletone = Instantiate(_clientPrefab);
-            await clientSingletone.CreateClient();
+            bool authenticated = await clientSingletone.CreateClient();
 
-            //Go to main menu
+            if (authenticated)
+            {
+                // 차후 이곳엔 에셋 로딩부분이 들어가야 한다.
+                Debug.Log("Load");
+                ClientSingletone.Instance.GameManager.GotoMenu();
+            }
+            else
+            {
+                Debug.LogError("UGS Service login failed");
+            }
         }
     }
 

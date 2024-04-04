@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class ClientSingletone : MonoBehaviour
@@ -28,10 +29,10 @@ public class ClientSingletone : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public async Task CreateClient()
+    public async Task<bool> CreateClient()
     {
         GameManager = new ClientGameManager();
 
-        await GameManager.InitAsync();
+        return await GameManager.InitAsync();
     }
 }
